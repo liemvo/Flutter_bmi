@@ -1,6 +1,6 @@
-# bmi
+# BMI
 
-A new Flutter application.
+A new BMI calculatr that support kg and lb units. This is only the learning project. 
 
 ## Getting Started
 
