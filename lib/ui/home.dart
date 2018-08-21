@@ -26,10 +26,14 @@ class HomeState extends State<Home>{
   }
   void _calculator() {
     setState(() {
-      var height = double.parse(_heightController.text);
-      _bmiValue = isKg?
-        (double.parse(_weightController.text)/pow(height,2)) :
-        (double.parse(_weightController.text)/pow(height*12,2)*703);
+      if(_heightController.text.isNotEmpty && _weightController.text.isNotEmpty) {
+        var height = double.parse(_heightController.text);
+        _bmiValue = isKg ?
+        (double.parse(_weightController.text) / pow(height, 2)) :
+        (double.parse(_weightController.text) / pow(height * 12, 2) * 703);
+      } else {
+        _bmiValue = 0.0;
+      }
       _bmiMessage = _determineBMIMessage(_bmiValue);
     });
   }
