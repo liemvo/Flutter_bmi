@@ -2,9 +2,10 @@
 
 A new BMI calculatr that support kg and lb units. This is only the learning project. 
 Screenshots: 
-![iOS screen](https://github.com/liemvo/Flutter_bmi/blob/master/iOS_screen.png)
-
-![Android screen](https://github.com/liemvo/Flutter_bmi/blob/master/Android_screen.png)
+<p align="center">
+  <img src="https://github.com/liemvo/Flutter_bmi/blob/master/iOS_screen.png" width="350" title="iOS">
+  <img src="https://github.com/liemvo/Flutter_bmi/blob/master/Android_screen.png" width="350" alt="Android">
+</p>
 
 ## Getting Started
 
