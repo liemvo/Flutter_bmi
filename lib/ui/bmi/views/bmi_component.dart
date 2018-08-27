@@ -68,8 +68,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
                 children: <Widget>[
                   new Radio<int>(
                     activeColor: Colors.blueAccent,
-                    value: 0, groupValue: _viewModel.value, onChanged: handleRadioValueChanged
-                  ,
+                    value: 0, groupValue: _viewModel.value, onChanged: handleRadioValueChanged,
                   ),
                   new Text(
                     'Feet & pounds',

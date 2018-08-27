@@ -18,6 +18,9 @@ class BMIViewModel {
   }
 
   int get value => _unitType == UnitType.FeetPound?0 : 1;
+  set value(int value){
+    _unitType = value == 0? UnitType.FeetPound: UnitType.KilogamMetter;
+  }
 
   String get heightMessage => _unitType == UnitType.FeetPound? "Height in feets" : "Height in metters";
   String get weightMessage => _unitType == UnitType.FeetPound? "Weight in pounds" : "Weight in kilogams";

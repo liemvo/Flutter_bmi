@@ -2,6 +2,8 @@ import '../views/bmi_view.dart';
 import '../viewmodel/bmi_viewmodel.dart';
 import '../utils/bmi_constant.dart';
 import '../utils/bmi_utils.dart';
+import 'dart:async';
+
 class BMIPresenter {
   void onCalculateClicked(String weightString, String heightString){
 
@@ -19,8 +21,14 @@ class BasicBMIPresenter implements BMIPresenter{
   BMIViewModel _viewModel;
   BMIView _view;
 
-  BasicBMIPresenter(){
+  BasicBMIPresenter() {
     this._viewModel = BMIViewModel();
+    loadUnit();
+  }
+
+  void loadUnit() async{
+    _viewModel.value = await loadValue();
+    _view.updateView(_viewModel);
   }
   @override
   set bmiView(BMIView value) {
@@ -53,7 +61,7 @@ class BasicBMIPresenter implements BMIPresenter{
 
     if (type != _viewModel.unitType) {
       _viewModel.unitType = type;
-
+      saveValue(_viewModel.value);
       var height;
       var weight;
       if (!isEmptyString(heightString)) {
@@ -63,7 +71,6 @@ class BasicBMIPresenter implements BMIPresenter{
 
         }
       }
-
       if (!isEmptyString(weightString)) {
         try {
           weight = double.parse(weightString);
@@ -83,6 +90,4 @@ class BasicBMIPresenter implements BMIPresenter{
       _view.updateView(_viewModel);
     }
   }
-
-
 }

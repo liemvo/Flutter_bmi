@@ -1,5 +1,7 @@
 import '../utils/bmi_constant.dart';
 import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
 String determineBMIMessage(double value) {
   if (value < 18.5) {
@@ -22,4 +24,20 @@ double calculator(double height, double weight, UnitType uniType) {
 
 bool isEmptyString(String string){
   return string == null || string.length == 0;
+}
+
+Future<int> loadValue() async{
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  int data = preferences.getInt('data');
+  if( data != null ) {
+    return data;
+  } else {
+    return 0;
+  }
+
+}
+
+void saveValue(int value) async{
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setInt('data', value);
 }

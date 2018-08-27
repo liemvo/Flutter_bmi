@@ -1,6 +1,11 @@
 # MVP BMI Calculator
 
-A new BMI calculatr that support kg and lb units. Apply using the MVP architecture 
+A new BMI calculatr that support kg and lb units. Flutter Architecture with MVP pattern.
+
+###Highlight 
+* MVP pattern
+* Share preference
+
 Screenshots: 
 <p align="center">
   <img src="https://github.com/liemvo/Flutter_bmi/blob/master/iOS_screen.png" width="350" title="iOS">
