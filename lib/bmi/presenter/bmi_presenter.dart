@@ -2,7 +2,6 @@ import '../views/bmi_view.dart';
 import '../viewmodel/bmi_viewmodel.dart';
 import '../utils/bmi_constant.dart';
 import '../utils/bmi_utils.dart';
-import 'dart:async';
 
 class BMIPresenter {
   void onCalculateClicked(String weightString, String heightString){

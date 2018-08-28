@@ -1,8 +1,8 @@
-import '../viewmodel/bmi_viewmodel.dart';
 import 'package:flutter/material.dart';
+
+import '../viewmodel/bmi_viewmodel.dart';
 import '../views/bmi_view.dart';
 import '../presenter/bmi_presenter.dart';
-import '../utils/bmi_constant.dart';
 
 class HomePage extends StatefulWidget {
   final BMIPresenter presenter;

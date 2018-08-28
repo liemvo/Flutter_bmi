@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'ui/bmi/views/bmi_component.dart';
-import 'ui/bmi/presenter/bmi_presenter.dart';
+import 'bmi/views/bmi_component.dart';
+import 'bmi/presenter/bmi_presenter.dart';
 void main(){
   runApp(
     new MaterialApp(
