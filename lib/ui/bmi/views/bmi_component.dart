@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
   }
 
   void handleRadioValueChanged(int value) {
-    this.widget.presenter.onOptionChanged(value == 0 ? UnitType.FeetPound: UnitType.KilogamMetter, heightString: _heightController.text, weightString: _weightController.text );
+    this.widget.presenter.onOptionChanged(value, heightString: _heightController.text, weightString: _weightController.text );
   }
 
   void _calculator() {
@@ -40,8 +40,8 @@ class _HomePageState extends State<HomePage> implements BMIView {
     setState(() {
       _viewModel = viewModel;
 
-      _heightController.text = _viewModel.height != null ?_viewModel.height.toString():'';
-      _weightController.text = _viewModel.weight != null ?_viewModel.weight.toString():'';
+      _heightController.text = _viewModel.heightInString;
+      _weightController.text = _viewModel.weightInString;
 
     });
   }
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
                 children: <Widget>[
                   new Center(
                     child: new Text(
-                      'Your BMI: ${_viewModel.bmi.toStringAsFixed(2)}',
+                      'Your BMI: ${_viewModel.bmiInString}',
                       style: new TextStyle(
                           color: Colors.blue,
                           fontSize: 24.0,
@@ -169,10 +169,5 @@ class _HomePageState extends State<HomePage> implements BMIView {
         )
     );
   }
-
-
-
-
-
 
 }

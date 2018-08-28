@@ -9,7 +9,7 @@ class BMIPresenter {
 
   }
 
-  void onOptionChanged(UnitType type, {String weightString, String heightString}) {
+  void onOptionChanged(int value, {String weightString, String heightString}) {
 
   }
 
@@ -23,13 +23,14 @@ class BasicBMIPresenter implements BMIPresenter{
 
   BasicBMIPresenter() {
     this._viewModel = BMIViewModel();
-    loadUnit();
+    _loadUnit();
   }
 
-  void loadUnit() async{
+  void _loadUnit() async{
     _viewModel.value = await loadValue();
     _view.updateView(_viewModel);
   }
+
   @override
   set bmiView(BMIView value) {
     _view = value;
@@ -57,10 +58,11 @@ class BasicBMIPresenter implements BMIPresenter{
   }
 
   @override
-  void onOptionChanged(UnitType type, {String weightString, String heightString})  {
+  void onOptionChanged(int value, {String weightString, String heightString})  {
 
-    if (type != _viewModel.unitType) {
-      _viewModel.unitType = type;
+
+    if (value != _viewModel.value) {
+      _viewModel.value = value;
       saveValue(_viewModel.value);
       var height;
       var weight;
@@ -79,7 +81,7 @@ class BasicBMIPresenter implements BMIPresenter{
         }
       }
 
-      if (type == UnitType.FeetPound) {
+      if (_viewModel.unitType == UnitType.FeetPound) {
         if (weight != null) _viewModel.weight =  weight * 2.2046226218;
         if (height != null) _viewModel.height =  height * 3.28084;
       } else {
