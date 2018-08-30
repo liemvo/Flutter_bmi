@@ -15,10 +15,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> implements BMIView {
-  BMIViewModel _viewModel;
+  //BMIViewModel _viewModel;
   var _ageController = new TextEditingController();
   var _heightController = new TextEditingController();
   var _weightController = new TextEditingController();
+  var _message = '';
+  var _bmiString = '';
+  var _value = 0;
+  var _heightMessage = '';
+  var _weightMessage = '';
 
   @override
   void initState() {
@@ -36,13 +41,30 @@ class _HomePageState extends State<HomePage> implements BMIView {
   }
 
   @override
-  void updateView(BMIViewModel viewModel) {
+  void updateBmiValue(String bmiValue, String bmiMessage){
     setState(() {
-      _viewModel = viewModel;
-
-      _heightController.text = _viewModel.heightInString;
-      _weightController.text = _viewModel.weightInString;
-
+      _bmiString = bmiValue;
+      _message = bmiMessage;
+    });
+  }
+  @override
+  void updateWeight({String weight}){
+    setState(() {
+      _weightController.text = weight != null?weight:'';
+    });
+  }
+  @override
+  void updateHeight({String height}){
+    setState(() {
+      _heightController.text = height != null?height:'';
+    });
+  }
+  @override
+  void updateUnit(int value, String heightMessage, String weightMessage){
+    setState(() {
+      _value = value;
+      _heightMessage = heightMessage;
+      _weightMessage = weightMessage;
     });
   }
 
@@ -68,7 +90,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
                 children: <Widget>[
                   new Radio<int>(
                     activeColor: Colors.blueAccent,
-                    value: 0, groupValue: _viewModel.value, onChanged: handleRadioValueChanged,
+                    value: 0, groupValue: _value, onChanged: handleRadioValueChanged,
                   ),
                   new Text(
                     'Feet & pounds',
@@ -76,7 +98,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
                   ),
                   new Radio<int>(
                     activeColor: Colors.blueAccent,
-                    value: 1, groupValue: _viewModel.value, onChanged: handleRadioValueChanged,
+                    value: 1, groupValue: _value, onChanged: handleRadioValueChanged,
                   ),
                   new Text(
                     'Meters & kilograms',
@@ -105,8 +127,8 @@ class _HomePageState extends State<HomePage> implements BMIView {
                       controller: _heightController,
                       keyboardType: TextInputType.number,
                       decoration: new InputDecoration(
-                          labelText: _viewModel.heightMessage,
-                          hintText: _viewModel.heightMessage,
+                          labelText: _heightMessage,
+                          hintText: _heightMessage,
                           icon: new Icon(Icons.assessment),
                           fillColor: Colors.white,
                       ),
@@ -115,8 +137,8 @@ class _HomePageState extends State<HomePage> implements BMIView {
                       controller: _weightController,
                       keyboardType: TextInputType.number,
                       decoration: new InputDecoration(
-                          labelText: _viewModel.weightMessage,
-                          hintText: _viewModel.weightMessage,
+                          labelText: _weightMessage,
+                          hintText: _weightMessage,
                           icon: new Icon(Icons.menu),
                           fillColor: Colors.white
                       ),
@@ -142,7 +164,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
                 children: <Widget>[
                   new Center(
                     child: new Text(
-                      'Your BMI: ${_viewModel.bmiInString}',
+                      'Your BMI: ${_bmiString}',
                       style: new TextStyle(
                           color: Colors.blue,
                           fontSize: 24.0,
@@ -154,7 +176,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
                   new Padding(padding: new EdgeInsets.all(2.0)),
                   new Center(
                     child: new Text(
-                      '${_viewModel.bmiMessage}',
+                      '${_message}',
                       style: new TextStyle(
                           color: Colors.pinkAccent,
                           fontSize: 24.0,

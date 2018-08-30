@@ -7,11 +7,9 @@ class BMIPresenter {
   void onCalculateClicked(String weightString, String heightString){
 
   }
-
   void onOptionChanged(int value, {String weightString, String heightString}) {
 
   }
-
   set bmiView(BMIView value){}
 
 }
@@ -27,13 +25,14 @@ class BasicBMIPresenter implements BMIPresenter{
 
   void _loadUnit() async{
     _viewModel.value = await loadValue();
-    _view.updateView(_viewModel);
+    _view.updateUnit(_viewModel.value, _viewModel.heightMessage, _viewModel.weightMessage);
+
   }
 
   @override
   set bmiView(BMIView value) {
     _view = value;
-    _view.updateView(_viewModel);
+    _view.updateUnit(_viewModel.value, _viewModel.heightMessage, _viewModel.weightMessage);
   }
 
   @override
@@ -53,7 +52,7 @@ class BasicBMIPresenter implements BMIPresenter{
     _viewModel.height = height;
     _viewModel.weight = weight;
     _viewModel.bmi = calculator(height, weight, _viewModel.unitType);
-    _view.updateView(_viewModel);
+    _view.updateBmiValue(_viewModel.bmiInString, _viewModel.bmiMessage);
   }
 
   @override
@@ -88,7 +87,9 @@ class BasicBMIPresenter implements BMIPresenter{
         if (height != null) _viewModel.height =  height / 3.28084;
       }
 
-      _view.updateView(_viewModel);
+      _view.updateUnit(_viewModel.value, _viewModel.heightMessage, _viewModel.weightMessage);
+      _view.updateHeight(height: _viewModel.heightInString);
+      _view.updateWeight(weight: _viewModel.weightInString);
     }
   }
 }
