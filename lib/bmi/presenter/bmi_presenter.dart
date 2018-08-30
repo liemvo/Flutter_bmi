@@ -12,6 +12,9 @@ class BMIPresenter {
   }
   set bmiView(BMIView value){}
 
+  void onAgeSubmitted(String age){}
+  void onHeightSubmitted(String height){}
+  void onWeightSubmitted(String weight){}
 }
 
 class BasicBMIPresenter implements BMIPresenter{
@@ -26,7 +29,6 @@ class BasicBMIPresenter implements BMIPresenter{
   void _loadUnit() async{
     _viewModel.value = await loadValue();
     _view.updateUnit(_viewModel.value, _viewModel.heightMessage, _viewModel.weightMessage);
-
   }
 
   @override
@@ -58,6 +60,8 @@ class BasicBMIPresenter implements BMIPresenter{
   @override
   void onOptionChanged(int value, {String weightString, String heightString})  {
 
+    final weightScale = 2.2046226218;
+    final heightScale = 2.54;
 
     if (value != _viewModel.value) {
       _viewModel.value = value;
@@ -68,7 +72,6 @@ class BasicBMIPresenter implements BMIPresenter{
         try {
           height = double.parse(heightString);
         } catch (e) {
-
         }
       }
       if (!isEmptyString(weightString)) {
@@ -80,16 +83,39 @@ class BasicBMIPresenter implements BMIPresenter{
       }
 
       if (_viewModel.unitType == UnitType.FeetPound) {
-        if (weight != null) _viewModel.weight =  weight * 2.2046226218;
-        if (height != null) _viewModel.height =  height * 3.28084;
+        if (weight != null) _viewModel.weight =  weight * weightScale;
+        if (height != null) _viewModel.height =  height / heightScale;
       } else {
-        if (weight != null) _viewModel.weight =  weight / 2.2046226218;
-        if (height != null) _viewModel.height =  height / 3.28084;
+        if (weight != null) _viewModel.weight =  weight / weightScale;
+        if (height != null) _viewModel.height =  height * heightScale;
       }
 
       _view.updateUnit(_viewModel.value, _viewModel.heightMessage, _viewModel.weightMessage);
       _view.updateHeight(height: _viewModel.heightInString);
       _view.updateWeight(weight: _viewModel.weightInString);
+    }
+  }
+
+  @override
+  void onAgeSubmitted(String age) {
+    // TODO: will implement late
+  }
+
+  @override
+  void onHeightSubmitted(String height) {
+    try {
+      _viewModel.height = double.parse(height);
+    } catch (e){
+
+    }
+  }
+
+  @override
+  void onWeightSubmitted(String weight) {
+    try {
+      _viewModel.weight = double.parse(weight);
+    } catch (e){
+
     }
   }
 }

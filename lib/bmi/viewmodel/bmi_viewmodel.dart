@@ -22,8 +22,8 @@ class BMIViewModel {
     _unitType = value == 0? UnitType.FeetPound: UnitType.KilogamMetter;
   }
 
-  String get heightMessage => _unitType == UnitType.FeetPound? "Height in feets" : "Height in metters";
-  String get weightMessage => _unitType == UnitType.FeetPound? "Weight in pounds" : "Weight in kilogams";
+  String get heightMessage => _unitType == UnitType.FeetPound? "Height in inch" : "Height in cm";
+  String get weightMessage => _unitType == UnitType.FeetPound? "Weight in pound" : "Weight in kg";
   String get bmiMessage => determineBMIMessage(_bmi);
   String get bmiInString => bmi.toStringAsFixed(2);
   String get heightInString => height != null ? height.toString():'';
