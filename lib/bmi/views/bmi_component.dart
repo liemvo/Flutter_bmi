@@ -13,10 +13,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> implements BMIView {
-  //BMIViewModel _viewModel;
-  var _ageController = TextEditingController();
+  
   var _heightController = TextEditingController();
   var _weightController = TextEditingController();
+  String _age, _weight, _height;
   var _message = '';
   var _bmiString = '';
   var _value = 0;
@@ -26,6 +26,8 @@ class _HomePageState extends State<HomePage> implements BMIView {
   final FocusNode _heightFocus = FocusNode();
   final FocusNode _weightFocus = FocusNode();
 
+  var _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -33,11 +35,15 @@ class _HomePageState extends State<HomePage> implements BMIView {
   }
 
   void handleRadioValueChanged(int value) {
-    this.widget.presenter.onOptionChanged(value, heightString: _heightController.text, weightString: _weightController.text );
+    this.widget.presenter.onOptionChanged(value, heightString: _height, weightString: _weight );
   }
 
   void _calculator() {
-    this.widget.presenter.onCalculateClicked(_weightController.text, _heightController.text);
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      this.widget.presenter.onCalculateClicked(_weight, _height);
+    }
+    
   }
 
   @override
@@ -93,70 +99,24 @@ class _HomePageState extends State<HomePage> implements BMIView {
     );
 
     var _mainPartView = Container(
-      width: 380.0,
-      height: 240.0,
-      color: Colors.grey,
-      child: Column(
-        children: <Widget>[
-          TextFormField(
-            controller: _ageController,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.next,
-            focusNode: _ageFocus,
-            onFieldSubmitted: (term){
-              _fieldFocusChange(context, _ageFocus, _heightFocus);
-            },
-            decoration: InputDecoration(
-              labelText: 'Age',
-              hintText: 'Age',
-              icon: Icon(Icons.person_outline),
-              fillColor: Colors.white,
-            ),
+      color: Colors.grey.shade300,
+      margin: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0),
+      child: SingleChildScrollView(  
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              ageFormField(context),
+              heightFormField(context),
+              weightFormField(),
+              Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: calculateButton()
+              ,),
+            ],
           ),
-          TextFormField(
-            controller: _heightController,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.next,
-            focusNode: _heightFocus,
-            onFieldSubmitted: (term) {
-              _fieldFocusChange(context, _heightFocus, _weightFocus);
-            },
-            decoration: InputDecoration(
-                labelText: _heightMessage,
-                hintText: _heightMessage,
-                icon: Icon(Icons.assessment),
-                fillColor: Colors.white,
-            ),
-          ),
-          TextFormField(
-            controller: _weightController,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            focusNode: _weightFocus,
-            onFieldSubmitted: (value){
-              _weightFocus.unfocus();
-              _calculator();
-            },
-            decoration: InputDecoration(
-                labelText: _weightMessage,
-                hintText: _weightMessage,
-                icon: Icon(Icons.menu),
-                fillColor: Colors.white
-            ),
-          ),
-          Padding(padding: EdgeInsets.all(4.5)),
-          Center(
-            child: RaisedButton(
-              onPressed: _calculator,
-              color: Colors.pinkAccent,
-              child: Text(
-                'Calculate',
-                style: TextStyle(fontSize: 16.9),
-              ),
-              textColor: Colors.white70,
-            ),
-          )
-        ],
+        ),
       ),
     );
 
@@ -164,7 +124,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
       children: <Widget>[
         Center(
           child: Text(
-            'Your BMI: ${_bmiString}',
+            'Your BMI: $_bmiString',
             style: TextStyle(
                 color: Colors.blue,
                 fontSize: 24.0,
@@ -176,7 +136,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
         Padding(padding: EdgeInsets.all(2.0)),
         Center(
           child: Text(
-            '${_message}',
+            '$_message',
             style: TextStyle(
                 color: Colors.lightGreen,
                 fontSize: 24.0,
@@ -186,6 +146,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
         )
       ],
     );
+
     return Scaffold(
         appBar: AppBar(
           title: Text('BMI'),
@@ -193,21 +154,108 @@ class _HomePageState extends State<HomePage> implements BMIView {
           backgroundColor: Colors.pinkAccent.shade400,
         ),
         backgroundColor: Colors.white,
-        body: Container(
-          child: ListView(
-            children: <Widget>[
-              Image.asset('images/bmilogo.png',
-                width: 100.0,
-                height: 100.0,),
-              Padding(padding: EdgeInsets.all(5.0)),
-              _unitView,
-              Padding(padding: EdgeInsets.all(5.0)),
-              _mainPartView,
-              Padding(padding: EdgeInsets.all(5.0)),
-              _resultView
-            ],
-          ),
+        body: ListView(
+          children: <Widget>[
+            Image.asset('images/bmilogo.png',
+              width: 100.0,
+              height: 100.0,)
+            ,
+            Padding(padding: EdgeInsets.all(5.0)),
+            _unitView,
+            Padding(padding: EdgeInsets.all(5.0)),
+            _mainPartView,
+            Padding(padding: EdgeInsets.all(5.0)),
+            _resultView
+          ],
         )
+    );
+  }
+
+  RaisedButton calculateButton() {
+    return RaisedButton(
+      onPressed: _calculator,
+      color: Colors.pinkAccent,
+      child: Text(
+        'Calculate',
+        style: TextStyle(fontSize: 16.9),
+      ),
+      textColor: Colors.white70,
+    );
+  }
+
+  TextFormField weightFormField() {
+    return TextFormField(
+      controller: _weightController,
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.done,
+      focusNode: _weightFocus,
+      onFieldSubmitted: (value){
+        _weightFocus.unfocus();
+        _calculator();
+      },
+      validator: (value) {
+        if (value.length == 0 || double.parse(value) == 0.0) {
+          return ('Weight is not valid. Weight > 0.0');
+        }
+      }, 
+      onSaved: (value) {
+        _weight = value;
+      },
+      decoration: InputDecoration(
+          hintText: _weightMessage,
+          labelText: _weightMessage,
+          icon: Icon(Icons.menu),
+          fillColor: Colors.white
+      ),
+    );
+  }
+
+  TextFormField heightFormField(BuildContext context) {
+    return TextFormField(
+      controller: _heightController,
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      focusNode: _heightFocus,
+      onFieldSubmitted: (term) {
+        _fieldFocusChange(context, _heightFocus, _weightFocus);
+      },
+      validator: (value) {
+        if (value.length == 0 || double.parse(value) == 0.0) {
+          return ('Height is not valid. Height > 0.0');
+        }
+      }, 
+      onSaved: (value) {
+        _height = value;
+      },
+      decoration: InputDecoration(
+          hintText: _heightMessage,
+          icon: Icon(Icons.assessment),
+          fillColor: Colors.white,
+      ),
+    );
+  }
+
+  TextFormField ageFormField(BuildContext context) {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      focusNode: _ageFocus,
+      onFieldSubmitted: (term){
+        _fieldFocusChange(context, _ageFocus, _heightFocus);
+      },
+      validator: (value) {
+        if (value.length == 0 || double.parse(value) <= 15) {
+          return ('Age should be over 15 years old');
+        }
+      }, 
+      onSaved: (value) {
+        _age = value;
+      },
+      decoration: InputDecoration(
+        hintText: 'Age',
+        icon: Icon(Icons.person_outline),
+        fillColor: Colors.white,
+      ),
     );
   }
 

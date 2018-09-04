@@ -4,7 +4,9 @@ A new BMI calculator that support kg and lb units. Flutter MVP architecture patt
 
 **Highlight** 
 * MVP pattern
-* Share preference
+* [Keyboard Action and next forcus field](https://medium.com/flutterpub/flutter-keyboard-actions-and-next-focus-field-3260dc4c694)
+* Share preference using
+* [Field validator]()
 
 Screenshots: 
 <p align="center">
