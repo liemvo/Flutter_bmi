@@ -30,7 +30,7 @@ String determineBMIMessage(double value) {
     return 'Severely obese';
   } else if(value >= 40) {
     return 'Very serverely obese';
-  }
+  } else return '';
 }
 
 double calculator(double height, double weight, UnitType uniType) {

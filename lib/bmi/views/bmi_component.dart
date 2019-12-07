@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> implements BMIView {
   
   var _heightController = TextEditingController();
   var _weightController = TextEditingController();
-  String _age, _weight, _height;
+  String _weight, _height;
   var _message = '';
   var _bmiString = '';
   var _value = 0;
@@ -249,7 +249,6 @@ class _HomePageState extends State<HomePage> implements BMIView {
         }
       }, 
       onSaved: (value) {
-        _age = value;
       },
       decoration: InputDecoration(
         hintText: 'Age',
